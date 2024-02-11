@@ -3,6 +3,8 @@ package org.danilskryl.aston.config;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.danilskryl.aston.dto.ProductDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,23 +29,28 @@ public class KafkaConsumerConfiguration {
     Map<String, Object> props = new HashMap<>();
     props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
     props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+    props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
+        StringDeserializer.class);
     props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-    props.put(JsonDeserializer.TRUSTED_PACKAGES, "ru.musify.musicservice.dto");
+//    props.put(JsonDeserializer.TRUSTED_PACKAGES, "org.danilskryl.aston.dto");
 
     return props;
   }
 
   @Bean
-  public ConsumerFactory<String, Object> consumerFactory() {
-    return new DefaultKafkaConsumerFactory<>(consumerConfig());
+  public ConsumerFactory<String, ProductDto> consumerFactory() {
+    return new DefaultKafkaConsumerFactory<>(consumerConfig(), new StringDeserializer(),
+        new JsonDeserializer<>(ProductDto.class));
   }
 
   @Bean
-  public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Object>> factory(
-      ConsumerFactory<String, Object> consumerFactory) {
-    ConcurrentKafkaListenerContainerFactory<String, Object> factory =
+  public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, ProductDto>> factory(
+      ConsumerFactory<String, ProductDto> consumerFactory) {
+    ConcurrentKafkaListenerContainerFactory<String, ProductDto> factory =
         new ConcurrentKafkaListenerContainerFactory<>();
     factory.setConsumerFactory(consumerFactory);
     return factory;
   }
 }
+
+
