@@ -35,7 +35,7 @@ class MarketServiceTest {
 
     Market actualMarket = marketService.findById(id);
 
-    verify(marketRepository, times(1)).findById(id);
+    verify(marketRepository, times(2)).findById(id);
     assertEquals(market, actualMarket);
   }
 }
