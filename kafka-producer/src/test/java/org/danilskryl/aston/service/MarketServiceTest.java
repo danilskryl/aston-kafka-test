@@ -25,7 +25,7 @@ class MarketServiceTest {
 
   @Test
   void testFindById() {
-    Long id = 4L;
+    Long id = 5L;
     Market market = Market.builder()
         .id(id)
         .name("Test market")
@@ -35,7 +35,7 @@ class MarketServiceTest {
 
     Market actualMarket = marketService.findById(id);
 
-    verify(marketRepository, times(2)).findById(id);
+    verify(marketRepository, times(1)).findById(id);
     assertEquals(market, actualMarket);
   }
 }
