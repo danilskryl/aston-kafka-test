@@ -16,7 +16,7 @@ pipeline {
                 sh './gradlew :test'
             }
         }
-        stage {
+        stage('End') {
             steps {
                 echo 'All successfully!!!'
             }
