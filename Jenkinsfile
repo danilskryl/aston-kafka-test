@@ -18,7 +18,7 @@ pipeline {
         }
         stage {
             steps {
-                echo 'All successful'
+                echo 'All successfully'
             }
         }
     }
