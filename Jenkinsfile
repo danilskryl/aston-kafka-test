@@ -1,7 +1,6 @@
 pipeline {
     agent {
         any {
-            args '-v /jenkins/.gradle:/jenkins/.gradle'
             image 'gradle:latest'
         }
 
@@ -15,6 +14,11 @@ pipeline {
         stage('Test') {
             steps {
                 sh './gradlew :test'
+            }
+        }
+        stage {
+            steps {
+                echo 'All successful'
             }
         }
     }
