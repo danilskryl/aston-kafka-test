@@ -15,8 +15,6 @@ pipeline {
         stage('Test') {
             steps {
                 sh './gradlew :test'
-                junit 'build/test-results/test/*xml'
-                sh './gradlew :cobertura'
             }
         }
     }
